@@ -1,0 +1,17 @@
+import "Room.dart";
+
+
+class User {
+
+
+  String _username = "";
+  String _password = "";
+  List<Room> _rooms = <Room>[];
+
+
+  User(String username, String password) {
+    this._username = username;
+    this._password = password;
+  }
+
+}
