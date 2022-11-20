@@ -1,6 +1,6 @@
 # anon_chat_mobile_app
 
-Anonymous chat mobile application for users
+Anonymous chat mobile application
 
 ## Getting Started
 
