@@ -14,4 +14,20 @@ class User {
     this._password = password;
   }
 
+
+  String getUsername(){
+    return this._username;
+  }
+
+  String getPassword(){
+    return this._password;
+  }
+
+  dynamic getData(){
+    return {
+      "username": this._username,
+      "password": this._password
+    };
+  }
+
 }
