@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:anon_chat_mobile_app/models/Message.dart';
+import 'package:anon_chat_mobile_app/models/User.dart';
 import 'package:flutter/material.dart';
 
 import '../../../helpers/DirectoryHelper.dart';
@@ -99,32 +100,49 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       dynamic responseData = jsonDecode(response.body);
       this.messages = [];
 
+
       for(dynamic responseElement in responseData)
-        setState(() => this.messages.add(Message(responseElement["text"], responseElement["time"])));
+        setState(() => this.messages.add(Message(responseElement["text"], responseElement["time"], User(responseElement["user"]["username"], responseElement["user"]["password"]))));
       
-      setState(() => this.messageList = this.displayMessages());
+      this.displayMessages();
       
     });
     
   }
 
   void sendMessage() async {
-    ChatRoomManagementService.sendMessage(Message(this.sendMessageController.text, "4:00 AM"), widget.roomId, await DirectoryHelper.getToken());
+    ChatRoomManagementService.sendMessage(Message(this.sendMessageController.text, "4:00 AM", User("", "")), widget.roomId, await DirectoryHelper.getToken());
     setState(() => this.sendMessageController.text = "");
   }
 
-  List<ListTile> displayMessages() {
+  void displayMessages() async {
     List<ListTile> messageList = [];
 
-    for(int i = 0; i < this.messages.length; i++)
-      messageList.add(
-        ListTile(
-          leading: Text(this.messages[i].getText()),
-        ),
-      );
+    for(int i = 0; i < this.messages.length; i++){
 
+      dynamic userData = await DirectoryHelper.getUserData();
 
-    return messageList;
+      if(this.messages[i].getUser().getUsername() == userData["username"])
+
+        messageList.add(
+          ListTile(
+            leading: Text(this.messages[i].getUser().getUsername() + ": " +this.messages[i].getText()),
+          ),
+        );
+      
+
+      else if(this.messages[i].getUser().getUsername() != userData["username"])
+         messageList.add(
+          ListTile(
+            trailing: Text(this.messages[i].getUser().getUsername() + ": " +this.messages[i].getText()),
+          ),
+        );
+
+    }
+
+    setState(() => this.messageList = messageList);
+
+      
   }
 
   void back(BuildContext context){

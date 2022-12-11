@@ -6,10 +6,10 @@ class Message {
   String _time = "";
   User _user = new User("","");
 
-  Message(String text, String time) {
+  Message(String text, String time, User user) {
     this._time = time;
     this._text = text;
-  }
+    this._user = user;  }
 
 
   String getText(){
@@ -25,6 +25,10 @@ class Message {
       "message": this._text,
       "time": this._time
     };
+  }
+
+  User getUser(){
+    return this._user;
   }
 
 }
