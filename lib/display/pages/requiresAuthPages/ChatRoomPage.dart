@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:anon_chat_mobile_app/models/Message.dart';
 import 'package:anon_chat_mobile_app/models/User.dart';
+import 'package:anon_chat_mobile_app/services/TimeService.dart';
 import 'package:flutter/material.dart';
 
 import '../../../helpers/DirectoryHelper.dart';
@@ -111,7 +112,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   void sendMessage() async {
-    ChatRoomManagementService.sendMessage(Message(this.sendMessageController.text, "4:00 AM", User("", "")), widget.roomId, await DirectoryHelper.getToken());
+    ChatRoomManagementService.sendMessage(Message(this.sendMessageController.text, await TimeService.getCurrentTime(), User("", "")), widget.roomId, await DirectoryHelper.getToken());
     setState(() => this.sendMessageController.text = "");
   }
 
@@ -148,5 +149,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   void back(BuildContext context){
     Navigator.pop(context);
   }
+
+  
 
 }
